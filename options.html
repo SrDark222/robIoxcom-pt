@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Opções do Cookie</title>
+<style>
+  body {
+    margin:0; padding:0; font-family:'Segoe UI', sans-serif; 
+    background: radial-gradient(circle at top left, #0f0c29, #302b63, #24243e);
+    color:#eee; display:flex; justify-content:center; align-items:center; height:100vh;
+  }
+  .container {
+    background: rgba(40,40,60,0.8);
+    backdrop-filter: blur(8px);
+    border-radius: 15px;
+    padding: 30px;
+    width: 300px;
+    box-shadow: 0 0 25px #5c5cff66;
+    text-align: center;
+  }
+  h2 {
+    color: #9fa8ff;
+    margin-bottom: 20px;
+    text-shadow: 0 0 5px #6b6bff;
+  }
+  label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #1a1a2e;
+    margin: 15px 0;
+    padding: 12px 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    user-select: none;
+    box-shadow: 0 0 10px #5c5cff44;
+  }
+  input[type="checkbox"] {
+    width: 50px;
+    height: 26px;
+    -webkit-appearance: none;
+    background: #444;
+    border-radius: 20px;
+    position: relative;
+    outline: none;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  input[type="checkbox"]:checked {
+    background: #5c5cff;
+    box-shadow: 0 0 8px #5c5cff;
+  }
+  input[type="checkbox"]::before {
+    content: '';
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    background: #fff;
+    transition: 0.3s;
+  }
+  input[type="checkbox"]:checked::before {
+    left: calc(100% - 24px);
+  }
+  button {
+    margin-top: 25px;
+    padding: 12px;
+    width: 100%;
+    background: linear-gradient(90deg, #6a5acd, #7b68ee);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 12px #7b68ee99;
+    transition: 0.3s;
+  }
+  button:hover {
+    filter: brightness(1.1);
+  }
+  .msg {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #ff5e5e;
+    min-height: 18px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Opções do Cookie</h2>
+  <label>
+    Remover todos amigos
+    <input type="checkbox" id="removeFriends" />
+  </label>
+  <label>
+    Remover quem segue
+    <input type="checkbox" id="removeFollowers" />
+  </label>
+  <button onclick="executar()">EXEC

